@@ -29,7 +29,8 @@ Open `index.html` in a browser. No build step, no server.
 
 | Tool | Used for |
 |---|---|
-| [Fill in] | [Fill in] |
+| Copilot in VS Code | Creating and refining the Stage 1 HTML/CSS mockup and project documentation |
+| Browser preview and PowerShell | Reviewing the rendered page and checking required content and responsive styling |
 
 Details per stage: see the `ai-log/` folder.
 
