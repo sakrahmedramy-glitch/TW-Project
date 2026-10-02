@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Invoice Payer - mockup</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header-content">
+      <p class="app-eyebrow">Gestiunea facturilor</p>
+      <h1>Smart Invoice Payer</h1>
+      <p class="app-description">Urmărește facturile și vezi rapid ce plăți sunt încă de făcut.</p>
+      <p class="app-count">3 facturi, dintre care 2 neplătite</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h2>Adaugă factură</h2>
+      <p class="panel-description">Completează detaliile pentru o factură nouă.</p>
+      <form class="item-form">
+        <label for="titlu">Titlu</label>
+        <input id="titlu" type="text" name="titlu" placeholder="Ex: Factură electricitate" maxlength="100" required>
+
+        <label for="urgenta">Urgență</label>
+        <select id="urgenta" name="urgenta">
+          <option value="scazuta">Scăzută</option>
+          <option value="medie" selected>Medie</option>
+          <option value="mare">Mare</option>
+        </select>
+
+        <button type="submit">Adaugă</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Facturile mele</h2>
+      <p class="panel-description">Plățile tale, organizate după nivelul de urgență.</p>
+      <!-- Empty-state message is hidden while invoices are present. -->
+      <p class="empty" hidden>Nu există nicio factură.</p>
+      <ul class="item-list">
+        <li class="item-card">
+          <div>
+            <h3>Factură electricitate</h3>
+            <span class="badge badge-mare">Urgență mare</span>
+          </div>
+          <span class="status status-unpaid">Neplătită</span>
+        </li>
+        <li class="item-card done">
+          <div>
+            <h3>Abonament internet</h3>
+            <span class="badge badge-medie">Urgență medie</span>
+          </div>
+          <span class="status status-paid">Plătită</span>
+        </li>
+        <li class="item-card">
+          <div>
+            <h3>Factură apă</h3>
+            <span class="badge badge-scazuta">Urgență scăzută</span>
+          </div>
+          <span class="status status-unpaid">Neplătită</span>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Proiect Tehnologii Web</p>
+  </footer>
+</body>
+</html>
