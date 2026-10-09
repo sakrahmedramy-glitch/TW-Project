@@ -25,16 +25,29 @@ Sample data used across all stages:
 
 Open `index.html` in a browser. No build step, no server.
 
+## Stage 2: data logic
+
+Plain JavaScript, no DOM access. `facturi.js` contains the sample invoice data and immutable functions
+for listing titles, counting unpaid invoices, searching, adding with validation, toggling payment status,
+and deleting. The grouped examples and assertions run in the browser console when the page loads
+(F12 or Ctrl + Shift + J).
+
+The add function trims and validates the title (1–100 characters), checks the urgency value, defaults
+urgency to `medie`, and generates the next ID from the largest existing ID. Each operation returns a
+new array and leaves its input unchanged.
+
 ## AI usage
 
 | Tool | Used for |
 |---|---|
 | Copilot in VS Code | Creating and refining the Stage 1 HTML/CSS mockup and project documentation |
-| Browser preview and PowerShell | Reviewing the rendered page and checking required content and responsive styling |
+| Copilot in VS Code | Implementing and documenting the Stage 2 JavaScript data logic |
+| Browser DevTools console | Checking the grouped Stage 2 examples and assertions after opening `index.html` |
 
 Details per stage: see the `ai-log/` folder.
 
 ## Status
 
 - [x] Stage 1: static mockup
-- [ ] Stage 2: data logic in JavaScript
+- [x] Stage 2: data logic in JavaScript
+- [ ] Stage 3: Vite and React project
