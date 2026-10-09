@@ -36,6 +36,21 @@ The add function trims and validates the title (1–100 characters), checks the 
 urgency to `medie`, and generates the next ID from the largest existing ID. Each operation returns a
 new array and leaves its input unchanged.
 
+### Stage 2 verification checklist
+
+| ID | Requirement | Where (permalink) | How to check |
+|---|---|---|---|
+| S2-R1 | JavaScript is linked and logs on page load | [index.html](https://github.com/sakrahmedramy-glitch/TW-Project/blob/9f675aa/index.html#L72) | Open the page and inspect the browser console |
+| S2-R2 | Three invoices have an id, title, state, and urgency | [facturi.js](https://github.com/sakrahmedramy-glitch/TW-Project/blob/9f675aa/facturi.js#L1-L5) | Read the initial array |
+| S2-R3 | List, count, search, add, toggle, and delete work | [facturi.js](https://github.com/sakrahmedramy-glitch/TW-Project/blob/9f675aa/facturi.js#L9-L75) | Inspect grouped console output and assertions |
+| S2-R4 | Empty titles and invalid urgency values are rejected | [facturi.js](https://github.com/sakrahmedramy-glitch/TW-Project/blob/9f675aa/facturi.js#L33-L59) | Check the validation messages in the console |
+| S2-R5 | Adding does not mutate the original array | [facturi.js](https://github.com/sakrahmedramy-glitch/TW-Project/blob/9f675aa/facturi.js#L82-L88) | Console confirms the original still has three invoices |
+| S2-R6 | README Stage 2 section and AI log are present | [README.md](https://github.com/sakrahmedramy-glitch/TW-Project/blob/9f675aa/README.md#L28), [ai-log/etapa-02.md](https://github.com/sakrahmedramy-glitch/TW-Project/blob/9f675aa/ai-log/etapa-02.md) | Read both files |
+| S2-R7 | Stage 2 commit is published on GitHub | [Stage 2 commit 9f675aa](https://github.com/sakrahmedramy-glitch/TW-Project/commit/9f675aa) | Check the commit in the remote repository |
+
+S2-R7 is not yet complete: the local Stage 2 commit is ready, but pushing it was rejected by GitHub
+with HTTP 403 because the configured account does not have permission to write to this repository.
+
 ## AI usage
 
 | Tool | Used for |
