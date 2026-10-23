@@ -74,15 +74,17 @@ Details per stage: see the `ai-log/` folder.
 
 - [x] Stage 1: static mockup
 - [x] Stage 2: data logic in JavaScript
-- [ ] Stage 3: Vite and React project (local verification complete; publication pending)
+- [x] Stage 3: Vite and React project (local verification complete; publication pending)
+- [x] Stage 4: components rendered from data (local checks passed; publication pending)
+- [ ] Stage 5: local state and events
 
 ## Stage 3: Vite and React project
 
-The application is being moved to `frontend/`, built with Vite and React. The three
-sample invoices from the data model are declared in `frontend/src/App.jsx`; the
-header count is calculated from that array, while the invoice list is temporarily
-displayed as formatted JSON. The Stage 1 stylesheet is reused in
-`frontend/src/App.css`, with a single-column layout for this stage.
+The application is built with Vite and React in `frontend/`. The three sample
+invoices from the data model are declared in `frontend/src/App.jsx`, and the header
+count is calculated from that array. The list was initially displayed as formatted
+JSON and is now rendered by the Stage 4 components. The Stage 1 stylesheet is reused
+in `frontend/src/App.css`, with a single-column layout.
 
 The original Stage 1 and Stage 2 files are kept together in `mockup/`.
 
@@ -100,3 +102,31 @@ The original Stage 1 and Stage 2 files are kept together in `mockup/`.
 
 S3-R1 and S3-R5 have been verified locally. S3-R7 remains pending until the Stage 3
 changes are committed and published.
+
+## Stage 4: components rendered from data
+
+The invoice list is rendered from the data through two reusable components:
+- `InvoiceList` receives the complete array and renders one card per invoice.
+- `InvoiceCard` receives one invoice through props and displays its title, urgency,
+  and payment status.
+
+The list uses each invoice ID as its React key, displays an explicit message when
+there are no invoices, and changes the card appearance based on whether the invoice
+is paid. Adding or changing an invoice in the array updates the rendered cards
+without editing the components.
+
+### Stage 4 verification checklist
+
+| ID | Requirement | Where | How to check |
+|---|---|---|---|
+| S4-R1 | At least two components, one per file | `frontend/src/components/` | Open the folder |
+| S4-R2 | Card receives invoice data through props | `frontend/src/components/InvoiceCard.jsx` | Read the component |
+| S4-R3 | List uses `map` and `key={factura.id}` | `frontend/src/components/InvoiceList.jsx` | Inspect the code and browser console |
+| S4-R4 | Empty list displays a message | `frontend/src/components/InvoiceList.jsx` | Temporarily set `facturi` to `[]` |
+| S4-R5 | Payment state changes the card appearance | `frontend/src/components/InvoiceCard.jsx` | Toggle a `platita` value |
+| S4-R6 | README Stage 4 section and AI log are present | `README.md`, `ai-log/etapa-04.md` | Read both files |
+| S4-R7 | Stage 4 commit is published | Git history | Check the Stage 4 commit |
+
+The Stage 4 lint and production build pass. The browser renders three invoice cards
+with no console warnings or errors. S4-R7 remains pending until the changes are
+committed and published.

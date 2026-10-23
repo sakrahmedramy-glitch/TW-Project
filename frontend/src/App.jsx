@@ -1,3 +1,5 @@
+import InvoiceList from "./components/InvoiceList.jsx";
+
 const facturi = [
   { id: 1, titlu: "Factură electricitate", platita: false, urgenta: "mare" },
   { id: 2, titlu: "Abonament internet", platita: true, urgenta: "medie" },
@@ -28,7 +30,7 @@ export default function App() {
           <p className="panel-description">
             Plățile tale, organizate după nivelul de urgență.
           </p>
-          <pre>{JSON.stringify(facturi, null, 2)}</pre>
+          <InvoiceList facturi={facturi} />
         </section>
       </main>
     </>
