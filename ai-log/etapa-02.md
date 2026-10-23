@@ -11,7 +11,7 @@
 ## Key requests
 ### 1. Create the Stage 2 JavaScript logic
 - Asked: Move the app data out of the HTML into a JavaScript array of objects and implement the core app functions: listing titles, counting active items, searching, adding with validation, toggling state, and deleting.
-- Got: A separate module named `facturi.js` containing the invoice array, fixed allowed values (`URGENTE`), and immutable logic functions using `map`, `filter`, and `reduce` for ID generation.
+- Got: A separate module named `facturi.js` containing the invoice array, fixed allowed values (`URGENTE`), immutable array operations using `map` and `filter`, and a monotonic ID allocator.
 - Changed or rejected: Kept the page DOM untouched; the logic does not manipulate the document or events, matching the Stage 2 requirement.
 
 ### 2. Connect the JavaScript to the page
@@ -26,5 +26,5 @@
 
 ## What I learned / what did not work
 The main challenge was keeping the code strictly data-only and avoiding any DOM access. Functions return new arrays/objects instead of modifying the original list.
-The validation checks for a blank title, titles longer than the 100-character data-model limit, and invalid urgency values. The default urgency is `medie`; IDs are generated as maximum existing ID plus one, including after deletion.
+The validation checks for a blank title, titles longer than the 100-character data-model limit, and invalid urgency values. The default urgency is `medie`; a monotonic allocator prevents IDs from being reused after deletion.
 The console examples are grouped and use assertions to make failures visible. Browser checks confirmed the expected initial count, case-insensitive search, valid and invalid additions, default urgency, unchanged original array, toggling, deletion, and unique ID generation after deletion. This stage remains separate from the UI so its functions can be reused in a later React stage.

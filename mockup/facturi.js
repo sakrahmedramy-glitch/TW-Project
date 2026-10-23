@@ -5,6 +5,10 @@ const facturi = [
 ];
 
 const URGENTE = ["scazuta", "medie", "mare"];
+let ultimulIdAlocat = facturi.reduce(
+  (max, factura) => Math.max(max, factura.id),
+  0
+);
 
 function listeazaTitluri(lista) {
   return lista.map((factura) => factura.titlu);
@@ -27,7 +31,12 @@ function cautaDupaTitlu(lista, text) {
 }
 
 function nextId(lista) {
-  return lista.reduce((max, factura) => Math.max(max, factura.id), 0) + 1;
+  const maxIdDinLista = lista.reduce(
+    (max, factura) => Math.max(max, factura.id),
+    0
+  );
+  ultimulIdAlocat = Math.max(ultimulIdAlocat, maxIdDinLista) + 1;
+  return ultimulIdAlocat;
 }
 
 function adaugaFactura(lista, titlu, urgenta = "medie") {
@@ -92,7 +101,7 @@ console.log("Adăugare invalidă (urgență invalidă):", adaugaFactura(facturi,
 const dupaStergere = stergeFactura(facturi, 3);
 const dupaAdaugareSiStergere = adaugaFactura(dupaStergere, "Factura gaz");
 console.log("ID după ștergerea facturii cu ID 3:", dupaAdaugareSiStergere[2].id);
-console.assert(dupaAdaugareSiStergere[2].id === 4, "ID-ul nu trebuie să fie duplicat după ștergere.");
+console.assert(dupaAdaugareSiStergere[2].id === 5, "ID-ul nu trebuie să fie reutilizat după ștergere.");
 console.groupEnd();
 
 console.group("Comutare stare și ștergere");
