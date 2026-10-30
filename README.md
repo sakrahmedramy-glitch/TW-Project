@@ -76,7 +76,7 @@ Details per stage: see the `ai-log/` folder.
 - [x] Stage 2: data logic in JavaScript
 - [x] Stage 3: Vite and React project (local verification complete; publication pending)
 - [x] Stage 4: components rendered from data (local checks passed; publication pending)
-- [ ] Stage 5: local state and events
+- [x] Stage 5: local state and events (implementation complete; validation unavailable; publication pending)
 
 ## Stage 3: Vite and React project
 
@@ -129,4 +129,29 @@ without editing the components.
 
 The Stage 4 lint and production build pass. The browser renders three invoice cards
 with no console warnings or errors. S4-R7 remains pending until the changes are
+committed and published.
+
+## Stage 5: local state and events
+
+The invoice list lives in React state in `App.jsx`. Checking an invoice updates its
+payment status and the unpaid counter; deleting invoices updates the list and its
+empty state. A header button switches between light and dark mode. These changes
+are held in memory and reset on refresh, as expected for this stage.
+
+### Stage 5 verification checklist
+
+| ID | Requirement | Where | How to check |
+|---|---|---|---|
+| S5-R1 | Invoice list is kept in `useState` in the parent | [App.jsx#L17-L18](./frontend/src/App.jsx#L17-L18) | Read the component state |
+| S5-R2 | Checking an invoice changes its state and card appearance | [App.jsx#L20-L28](./frontend/src/App.jsx#L20-L28), [InvoiceCard.jsx#L12-L24](./frontend/src/components/InvoiceCard.jsx#L12-L24) | Click a checkbox |
+| S5-R3 | Deleting an invoice removes it from the list | [App.jsx#L30-L32](./frontend/src/App.jsx#L30-L32), [InvoiceCard.jsx#L28-L34](./frontend/src/components/InvoiceCard.jsx#L28-L34) | Click Delete |
+| S5-R4 | Header counter is derived from the list, not stored in state | [App.jsx#L40](./frontend/src/App.jsx#L40) | Toggle a checkbox and watch the header |
+| S5-R5 | State updates are immutable and use updater functions | [App.jsx#L20-L32](./frontend/src/App.jsx#L20-L32) | Inspect the `map` and `filter` updates |
+| S5-R6 | Theme toggle works in both directions and overrides system preference | [App.jsx#L10-L13](./frontend/src/App.jsx#L10-L13), [App.jsx#L34-L38](./frontend/src/App.jsx#L34-L38), [App.css#L286-L306](./frontend/src/App.css#L286-L306) | Test with both system themes |
+| S5-R7 | No console warnings; README and AI log are updated | `README.md`, `ai-log/etapa-05.md` | Run lint/build and check the browser console |
+| S5-R8 | Stage 5 commit is published on GitHub | Git history | Check the Stage 5 commit |
+
+S5-R1–S5-R6 are implemented locally. S5-R7 is only partially verified: the
+documentation is present, but lint, build, and browser-console checks could not be
+run in the current environment. S5-R8 remains pending until the changes are
 committed and published.

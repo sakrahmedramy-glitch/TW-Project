@@ -284,7 +284,7 @@ pre {
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #14121d;
     --card: #1e1b2e;
     --text: #e5e7eb;
@@ -293,6 +293,64 @@ pre {
     --accent-soft: #2a2342;
     --shadow: #00000030;
   }
+}
+
+:root[data-theme="dark"] {
+  --bg: #14121d;
+  --card: #1e1b2e;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: #352f4d;
+  --accent-soft: #2a2342;
+  --shadow: #00000030;
+}
+
+.invoice-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.invoice-main input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.btn-danger {
+  flex-shrink: 0;
+  border: 1px solid var(--high);
+  border-radius: 8px;
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--high);
+  font: inherit;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  background: var(--high);
+  color: #fff;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 @media (max-width: 700px) {
