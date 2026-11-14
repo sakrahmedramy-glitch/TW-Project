@@ -1,11 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { fetchFacturi } from "./api.js";
 import InvoiceList from "./components/InvoiceList.jsx";
-
-const FACTURI_INITIALE = [
-  { id: 1, titlu: "Factură electricitate", platita: false, urgenta: "mare" },
-  { id: 2, titlu: "Abonament internet", platita: true, urgenta: "medie" },
-  { id: 3, titlu: "Factură apă", platita: false, urgenta: "scazuta" }
-];
 
 function temaInitiala() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -14,8 +9,31 @@ function temaInitiala() {
 }
 
 export default function App() {
-  const [facturi, setFacturi] = useState(FACTURI_INITIALE);
+  const [facturi, setFacturi] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [tema, setTema] = useState(temaInitiala);
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function load() {
+      try {
+        const data = await fetchFacturi();
+        if (!ignore) setFacturi(data);
+      } catch (err) {
+        if (!ignore) setError(err.message);
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+
+    load();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   function handleToggle(id) {
     setFacturi((prev) =>
@@ -42,14 +60,14 @@ export default function App() {
   return (
     <>
       <header className="app-header">
+        <button
+          className="theme-toggle"
+          onClick={handleTema}
+          aria-pressed={tema === "dark"}
+        >
+          {tema === "dark" ? "Mod luminos" : "Mod întunecat"}
+        </button>
         <div className="app-header-content">
-          <button
-            className="theme-toggle"
-            onClick={handleTema}
-            aria-pressed={tema === "dark"}
-          >
-            {tema === "dark" ? "Mod luminos" : "Mod întunecat"}
-          </button>
           <p className="app-eyebrow">Gestiunea facturilor</p>
           <h1>Smart Invoice Payer</h1>
           <p className="app-description">
@@ -67,11 +85,24 @@ export default function App() {
           <p className="panel-description">
             Plățile tale, organizate după nivelul de urgență.
           </p>
-          <InvoiceList
-            facturi={facturi}
-            onToggle={handleToggle}
-            onDelete={handleDelete}
-          />
+          {loading && (
+            <p className="info" role="status">
+              Se încarcă...
+            </p>
+          )}
+          {error && (
+            <p className="error" role="alert">
+              Nu am putut încărca facturile: {error}. Rulează{" "}
+              <code>npm run api</code>.
+            </p>
+          )}
+          {!loading && !error && (
+            <InvoiceList
+              facturi={facturi}
+              onToggle={handleToggle}
+              onDelete={handleDelete}
+            />
+          )}
         </section>
       </main>
     </>

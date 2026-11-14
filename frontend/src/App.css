@@ -15,6 +15,9 @@
   --medium: #b45309;
   --high: #b91c1c;
   --on-accent: #ffffff;
+  --error-bg: #fef2f2;
+  --error-border: #fecaca;
+  --error-text: #b91c1c;
   --shadow: #1f29330d;
 }
 
@@ -27,6 +30,7 @@ body {
 }
 
 .app-header {
+  --orbit-right: max(-40px, calc((100vw - 1100px) / 2));
   position: relative;
   overflow: hidden;
   padding: 44px 24px 52px;
@@ -37,7 +41,7 @@ body {
 .app-header::after {
   position: absolute;
   top: -115px;
-  right: max(-40px, calc((100vw - 1100px) / 2));
+  right: var(--orbit-right);
   width: 340px;
   height: 340px;
   border: 1px solid var(--on-accent);
@@ -117,6 +121,25 @@ body {
   margin: 6px 0 22px;
   color: var(--muted);
   font-size: 0.92rem;
+}
+
+.info {
+  margin: 0;
+  color: var(--muted);
+}
+
+.error {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--error-border);
+  border-radius: 8px;
+  background: var(--error-bg);
+  color: var(--error-text);
+}
+
+.error code {
+  color: inherit;
+  font-weight: 700;
 }
 
 .item-form,
@@ -291,6 +314,9 @@ pre {
     --muted: #9ca3af;
     --border: #352f4d;
     --accent-soft: #2a2342;
+    --error-bg: #3b171c;
+    --error-border: #7f1d1d;
+    --error-text: #fca5a5;
     --shadow: #00000030;
   }
 }
@@ -302,6 +328,9 @@ pre {
   --muted: #9ca3af;
   --border: #352f4d;
   --accent-soft: #2a2342;
+  --error-bg: #3b171c;
+  --error-border: #7f1d1d;
+  --error-text: #fca5a5;
   --shadow: #00000030;
 }
 
@@ -337,8 +366,10 @@ pre {
 
 .theme-toggle {
   position: absolute;
-  top: 12px;
-  right: 16px;
+  z-index: 2;
+  top: 55px;
+  right: calc(var(--orbit-right) + 170px);
+  transform: translate(50%, -50%);
   padding: 6px 12px;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 8px;
@@ -355,11 +386,8 @@ pre {
 
 @media (max-width: 700px) {
   .app-header {
+    --orbit-right: -80px;
     padding: 36px 20px 42px;
-  }
-
-  .app-header::after {
-    right: -205px;
   }
 
   .container {

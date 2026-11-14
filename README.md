@@ -23,15 +23,29 @@ Sample data used across all stages:
 
 ## How to run
 
-The React app lives in `frontend/` and runs with Vite:
+The React app and mock REST API live in `frontend/`. Install dependencies once:
 
 ```sh
 cd frontend
 npm install
+```
+
+Start the API in the first terminal:
+
+```sh
+npm run api
+```
+
+The generated `GET /facturi` route is available at http://localhost:3001/facturi.
+Start Vite in a second terminal:
+
+```sh
 npm run dev
 ```
 
-Open the address printed in the terminal (usually http://localhost:5173).
+Open the address printed by Vite (usually http://localhost:5173). The frontend reads
+the API base URL from `VITE_API_URL` and defaults to `http://localhost:3001`.
+Copy `.env.example` to `.env` only when a different API address is needed.
 The original static mockup and Stage 2 data logic are preserved in `mockup/`.
 
 ## Stage 2: data logic
@@ -77,6 +91,7 @@ Details per stage: see the `ai-log/` folder.
 - [x] Stage 3: Vite and React project (local verification complete; publication pending)
 - [x] Stage 4: components rendered from data (local checks passed; publication pending)
 - [x] Stage 5: local state and events (implementation complete; validation unavailable; publication pending)
+- [x] Stage 6: data from a mock API (local verification complete; publication pending)
 
 ## Stage 3: Vite and React project
 
@@ -155,3 +170,39 @@ S5-R1–S5-R6 are implemented locally. S5-R7 is only partially verified: the
 documentation is present, but lint, build, and browser-console checks could not be
 run in the current environment. S5-R8 remains pending until the changes are
 committed and published.
+
+## Stage 6: data from a mock API
+
+The invoice data now lives in `frontend/db.json`. `json-server` 0.17.4 exposes it
+through `GET /facturi`, and `frontend/src/api.js` is the only place where the React
+application calls `fetch`. The API base URL comes from `VITE_API_URL`, with
+`http://localhost:3001` as the local default.
+
+`App.jsx` starts with an empty invoice list and requests the data after mounting.
+It displays a loading message while the request is pending, an actionable error
+message when the request fails, and `InvoiceList` only after a successful response.
+Checking and deleting invoices remain local Stage 5 interactions, so those changes
+are reset when the page reloads.
+
+Run Stage 6 in two terminals from `frontend/`:
+
+```sh
+npm run api  # terminal 1: http://localhost:3001
+npm run dev  # terminal 2: the Vite address, usually http://localhost:5173
+```
+
+### Stage 6 verification checklist
+
+| ID | Requirement | Where | How to check |
+|---|---|---|---|
+| S6-R1 | `npm run api` starts and the generated route returns JSON | `frontend/package.json`, `frontend/db.json` | Open http://localhost:3001/facturi |
+| S6-R2 | React loads invoice data instead of declaring it in the component | `frontend/src/App.jsx` | Search for the removed `FACTURI_INITIALE` constant and reload the app |
+| S6-R3 | A loading message appears while the request is pending | `frontend/src/App.jsx`, `frontend/src/App.css` | Start `json-server` with `--delay 4000`, then reload |
+| S6-R4 | A failed request displays an error instead of a blank page | `frontend/src/App.jsx`, `frontend/src/App.css` | Stop the API and reload the page |
+| S6-R5 | `fetch` is isolated and the API URL comes from the environment | `frontend/src/api.js`, `frontend/.env.example` | Search for `fetch` and inspect the URL definition |
+| S6-R6 | Stage 6 README section and AI log are present | `README.md`, `ai-log/etapa-06.md` | Read both files |
+| S6-R7 | The Stage 6 commit is published on GitHub | Git history | Check the Stage 6 commit |
+
+S6-R1–S6-R6 are implemented and checked locally. The API response, lint, and
+production build pass. S6-R7 remains pending until the changes are committed and
+published.
