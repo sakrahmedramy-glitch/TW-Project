@@ -91,7 +91,9 @@ Details per stage: see the `ai-log/` folder.
 - [x] Stage 3: Vite and React project (local verification complete; publication pending)
 - [x] Stage 4: components rendered from data (local checks passed; publication pending)
 - [x] Stage 5: local state and events (implementation complete; validation unavailable; publication pending)
-- [x] Stage 6: data from a mock API (local verification complete; publication pending)
+- [x] Stage 6: data from a mock API
+- [x] Stage 7: form and validation (local verification complete; publication pending)
+- [ ] Stage 8: routing and detail page
 
 ## Stage 3: Vite and React project
 
@@ -204,5 +206,46 @@ npm run dev  # terminal 2: the Vite address, usually http://localhost:5173
 | S6-R7 | The Stage 6 commit is published on GitHub | Git history | Check the Stage 6 commit |
 
 S6-R1–S6-R6 are implemented and checked locally. The API response, lint, and
-production build pass. S6-R7 remains pending until the changes are committed and
-published.
+production build pass. S6-R7 is complete: the Stage 6 changes are published in
+commit `6fbbfe3`.
+
+## Stage 7: form and validation
+
+Invoices can be added from the page. The `InvoiceForm` component is a controlled
+form with a title field and an urgency select. It validates the data before sending
+anything, and every change (add, toggle, delete) goes to the API before it shows up
+in the list. The list is updated with the object returned by the server, so new
+invoices get their `id` from `json-server`.
+
+Validation rules:
+- the title is required and cannot contain only spaces;
+- the title has at most 100 characters (the `maxLength` attribute and the code check);
+- the urgency must be one of `scazuta`, `medie`, or `mare`.
+
+Validation and save errors appear next to the form, not in an `alert`. The submit
+button is disabled and shows `Se salvează...` while the request is pending. The form
+is cleared only after a successful save; if the API is down, the typed title is kept.
+A failed toggle or delete shows an error above the list and keeps the list visible.
+
+`tw.json` in the repository root describes the resource for automatic checks:
+resource `facturi`, title field `titlu`, done field `platita`, and the sample value
+`urgenta: "mare"`. The form, cards, and messages carry the `data-testid` attributes
+from table 7.3; the urgency select uses `form-urgenta`.
+
+### Stage 7 verification checklist
+
+| ID | Requirement | Where | How to check |
+|---|---|---|---|
+| S7-R1 | Controlled form: `value` + `onChange` on every field | [InvoiceForm.jsx#L61-L83](./frontend/src/components/InvoiceForm.jsx#L61-L83) | Read the fields |
+| S7-R2 | Empty title shows an error and nothing is sent | [InvoiceForm.jsx#L18-L37](./frontend/src/components/InvoiceForm.jsx#L18-L37) | Submit empty, watch Network |
+| S7-R3 | Added invoice shows in the list and survives refresh | [App.jsx#L50-L53](./frontend/src/App.jsx#L50-L53), [api.js#L24-L29](./frontend/src/api.js#L24-L29) | Add, refresh |
+| S7-R4 | Toggle and delete survive refresh | [App.jsx#L55-L78](./frontend/src/App.jsx#L55-L78), [api.js#L31-L40](./frontend/src/api.js#L31-L40) | Toggle/delete, refresh |
+| S7-R5 | Button disabled while sending, form cleared only on success | [InvoiceForm.jsx#L39-L50](./frontend/src/components/InvoiceForm.jsx#L39-L50), [InvoiceForm.jsx#L90-L92](./frontend/src/components/InvoiceForm.jsx#L90-L92) | `--delay 3000`; stop the API and submit |
+| S7-R6 | `tw.json` and the `data-testid` attributes from table 7.3 | [tw.json](./tw.json), [InvoiceCard.jsx#L10-L40](./frontend/src/components/InvoiceCard.jsx#L10-L40), [InvoiceList.jsx#L6](./frontend/src/components/InvoiceList.jsx#L6) | `querySelectorAll` in the console |
+| S7-R7 | README Stage 7 section and AI log | `README.md`, `ai-log/etapa-07.md` | Read both files |
+| S7-R8 | Stage 7 commit is published on GitHub | Git history | Check the Stage 7 commit |
+
+S7-R1–S7-R7 are implemented and checked locally with lint, the production build,
+and automated headless Chrome scenarios for validation, add, toggle, delete,
+refresh, a stopped API, and a delayed API. S7-R8 remains pending until the changes
+are committed and published.

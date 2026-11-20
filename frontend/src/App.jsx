@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { fetchFacturi } from "./api.js";
+import {
+  createFactura,
+  deleteFactura,
+  fetchFacturi,
+  updateFactura
+} from "./api.js";
+import InvoiceForm from "./components/InvoiceForm.jsx";
 import InvoiceList from "./components/InvoiceList.jsx";
 
 function temaInitiala() {
@@ -22,7 +28,11 @@ export default function App() {
         const data = await fetchFacturi();
         if (!ignore) setFacturi(data);
       } catch (err) {
-        if (!ignore) setError(err.message);
+        if (!ignore) {
+          setError(
+            `Nu am putut încărca facturile: ${err.message}. Rulează npm run api.`
+          );
+        }
       } finally {
         if (!ignore) setLoading(false);
       }
@@ -35,18 +45,36 @@ export default function App() {
     };
   }, []);
 
-  function handleToggle(id) {
-    setFacturi((prev) =>
-      prev.map((factura) =>
-        factura.id === id
-          ? { ...factura, platita: !factura.platita }
-          : factura
-      )
-    );
+  // Întâi serverul, apoi state-ul: pe ecran ajunge doar ce s-a salvat.
+  // Eroarea nu este prinsă aici, ca formularul să o poată afișa.
+  async function handleAdd(factura) {
+    const creata = await createFactura(factura);
+    setFacturi((prev) => [...prev, creata]);
   }
 
-  function handleDelete(id) {
-    setFacturi((prev) => prev.filter((factura) => factura.id !== id));
+  async function handleToggle(id) {
+    const factura = facturi.find((f) => f.id === id);
+    if (!factura) return;
+
+    try {
+      const actualizata = await updateFactura(id, {
+        platita: !factura.platita
+      });
+      setFacturi((prev) => prev.map((f) => (f.id === id ? actualizata : f)));
+      setError(null);
+    } catch (err) {
+      setError(`Nu am putut actualiza factura: ${err.message}`);
+    }
+  }
+
+  async function handleDelete(id) {
+    try {
+      await deleteFactura(id);
+      setFacturi((prev) => prev.filter((f) => f.id !== id));
+      setError(null);
+    } catch (err) {
+      setError(`Nu am putut șterge factura: ${err.message}`);
+    }
   }
 
   function handleTema() {
@@ -81,22 +109,29 @@ export default function App() {
 
       <main className="container">
         <section className="panel">
+          <h2>Adaugă factură</h2>
+          <p className="panel-description">
+            Completează titlul și nivelul de urgență.
+          </p>
+          <InvoiceForm onAdd={handleAdd} />
+        </section>
+
+        <section className="panel">
           <h2>Facturile mele</h2>
           <p className="panel-description">
             Plățile tale, organizate după nivelul de urgență.
           </p>
           {loading && (
-            <p className="info" role="status">
+            <p className="info" role="status" data-testid="loading">
               Se încarcă...
             </p>
           )}
           {error && (
-            <p className="error" role="alert">
-              Nu am putut încărca facturile: {error}. Rulează{" "}
-              <code>npm run api</code>.
+            <p className="error" role="alert" data-testid="error">
+              {error}
             </p>
           )}
-          {!loading && !error && (
+          {!loading && (
             <InvoiceList
               facturi={facturi}
               onToggle={handleToggle}

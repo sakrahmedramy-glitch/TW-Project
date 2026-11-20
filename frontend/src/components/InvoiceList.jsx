@@ -2,7 +2,11 @@ import InvoiceCard from "./InvoiceCard.jsx";
 
 export default function InvoiceList({ facturi, onToggle, onDelete }) {
   if (facturi.length === 0) {
-    return <p className="empty">Nu există nicio factură.</p>;
+    return (
+      <p className="empty" data-testid="empty">
+        Nu există nicio factură.
+      </p>
+    );
   }
 
   return (

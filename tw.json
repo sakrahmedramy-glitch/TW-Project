@@ -1,0 +1,6 @@
+{
+  "resource": "facturi",
+  "title": "titlu",
+  "done": "platita",
+  "sample": { "urgenta": "mare" }
+}

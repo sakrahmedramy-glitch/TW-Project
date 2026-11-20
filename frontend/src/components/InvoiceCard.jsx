@@ -8,15 +8,20 @@ export default function InvoiceCard({ factura, onToggle, onDelete }) {
   const stareClass = factura.platita ? "paid" : "unpaid";
 
   return (
-    <li className={`item-card${factura.platita ? " done" : ""}`}>
+    <li
+      className={`item-card${factura.platita ? " done" : ""}`}
+      data-testid="item"
+      data-id={factura.id}
+    >
       <label className="invoice-main">
         <input
           type="checkbox"
           checked={factura.platita}
           onChange={() => onToggle(factura.id)}
+          data-testid="item-toggle"
         />
         <div>
-          <h3>{factura.titlu}</h3>
+          <h3 data-testid="item-title">{factura.titlu}</h3>
           <span className={`badge badge-${factura.urgenta}`}>
             Urgență {ETICHETE_URGENTA[factura.urgenta]}
           </span>
@@ -29,6 +34,7 @@ export default function InvoiceCard({ factura, onToggle, onDelete }) {
         className="btn-danger"
         onClick={() => onDelete(factura.id)}
         aria-label={`Șterge ${factura.titlu}`}
+        data-testid="item-delete"
       >
         Șterge
       </button>

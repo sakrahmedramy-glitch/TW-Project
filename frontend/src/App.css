@@ -98,7 +98,8 @@ body {
   margin: 32px auto;
   padding: 0 16px;
   display: grid;
-  grid-template-columns: 1fr;
+  /* Etapa 7: formularul în stânga, lista în dreapta */
+  grid-template-columns: 1fr 2fr;
   gap: 24px;
   align-items: start;
 }
@@ -399,4 +400,17 @@ pre {
   .panel {
     padding: 20px;
   }
+}
+
+/* Etapa 7: buton dezactivat cât timp se trimite */
+.item-form button:disabled,
+.item-form button:disabled:hover {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background: var(--accent);
+}
+
+.item-form input[aria-invalid="true"] {
+  border-color: var(--high);
 }

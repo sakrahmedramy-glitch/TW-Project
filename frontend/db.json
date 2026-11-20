@@ -29,6 +29,12 @@
       "titlu": "Abonament telefon",
       "platita": true,
       "urgenta": "scazuta"
+    },
+    {
+      "titlu": "Factura Internet",
+      "urgenta": "mare",
+      "platita": true,
+      "id": 6
     }
   ]
 }
