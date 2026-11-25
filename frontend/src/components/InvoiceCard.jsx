@@ -1,32 +1,37 @@
-const ETICHETE_URGENTA = {
-  scazuta: "scăzută",
-  medie: "medie",
-  mare: "mare"
-};
+import { Link } from "react-router-dom";
+import { ETICHETE_URGENTA } from "../constants.js";
+import styles from "./InvoiceCard.module.css";
 
 export default function InvoiceCard({ factura, onToggle, onDelete }) {
   const stareClass = factura.platita ? "paid" : "unpaid";
 
   return (
     <li
-      className={`item-card${factura.platita ? " done" : ""}`}
+      className={factura.platita ? `${styles.card} ${styles.done}` : styles.card}
       data-testid="item"
       data-id={factura.id}
     >
-      <label className="invoice-main">
+      <div className={styles.main}>
         <input
           type="checkbox"
           checked={factura.platita}
           onChange={() => onToggle(factura.id)}
+          aria-label={`Marchează ca plătită: ${factura.titlu}`}
           data-testid="item-toggle"
         />
         <div>
-          <h3 data-testid="item-title">{factura.titlu}</h3>
+          <Link
+            to={`/facturi/${factura.id}`}
+            className={styles.title}
+            data-testid="item-link"
+          >
+            {factura.titlu}
+          </Link>
           <span className={`badge badge-${factura.urgenta}`}>
-            Urgență {ETICHETE_URGENTA[factura.urgenta]}
+            Urgență {ETICHETE_URGENTA[factura.urgenta]?.toLowerCase()}
           </span>
         </div>
-      </label>
+      </div>
       <span className={`status status-${stareClass}`}>
         {factura.platita ? "Plătită" : "Neplătită"}
       </span>

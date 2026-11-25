@@ -1,4 +1,5 @@
 import InvoiceCard from "./InvoiceCard.jsx";
+import styles from "./InvoiceList.module.css";
 
 export default function InvoiceList({ facturi, onToggle, onDelete }) {
   if (facturi.length === 0) {
@@ -10,7 +11,7 @@ export default function InvoiceList({ facturi, onToggle, onDelete }) {
   }
 
   return (
-    <ul className="item-list">
+    <ul className={styles.list}>
       {facturi.map((factura) => (
         <InvoiceCard
           key={factura.id}

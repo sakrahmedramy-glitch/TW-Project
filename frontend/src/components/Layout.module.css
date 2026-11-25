@@ -1,0 +1,136 @@
+.header {
+  --orbit-right: max(-40px, calc((100vw - 1100px) / 2));
+  position: relative;
+  overflow: hidden;
+  padding: 44px 24px 32px;
+  background: linear-gradient(120deg, var(--accent), var(--accent-dark));
+  color: var(--on-accent);
+}
+
+.header::after {
+  position: absolute;
+  top: -115px;
+  right: var(--orbit-right);
+  width: 340px;
+  height: 340px;
+  border: 1px solid var(--on-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 36px var(--accent), 0 0 0 37px var(--on-accent), 0 0 0 78px var(--accent), 0 0 0 79px var(--on-accent);
+  content: "";
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.82;
+}
+
+.logo {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  letter-spacing: -0.04em;
+  line-height: 1.15;
+}
+
+.description {
+  max-width: 560px;
+  margin: 12px 0 0;
+  opacity: 0.88;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.link {
+  padding: 7px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  color: var(--on-accent);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+  opacity: 0.88;
+}
+
+.link:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.active {
+  opacity: 1;
+  border-color: var(--on-accent);
+  background: var(--on-accent);
+  color: var(--accent-dark);
+}
+
+.active:hover {
+  background: var(--on-accent);
+}
+
+.themeToggle {
+  position: absolute;
+  z-index: 2;
+  top: 55px;
+  right: calc(var(--orbit-right) + 170px);
+  transform: translate(50%, -50%);
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.themeToggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.main {
+  max-width: 1000px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.footer {
+  padding: 8px 16px 28px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 700px) {
+  .header {
+    --orbit-right: -80px;
+    padding: 68px 20px 28px;
+  }
+
+  /* Pe telefon, butonul stă în colț, deasupra textului, nu peste el. */
+  .themeToggle {
+    top: 18px;
+    right: 20px;
+    transform: none;
+  }
+
+  .main {
+    margin-top: 20px;
+  }
+}

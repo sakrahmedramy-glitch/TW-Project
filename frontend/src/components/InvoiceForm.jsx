@@ -1,10 +1,7 @@
 import { useState } from "react";
+import { URGENTE } from "../constants.js";
+import styles from "./InvoiceForm.module.css";
 
-const URGENTE = [
-  { value: "scazuta", label: "Scăzută" },
-  { value: "medie", label: "Medie" },
-  { value: "mare", label: "Mare" }
-];
 const TITLU_MAX = 100;
 const URGENTA_IMPLICITA = "medie";
 
@@ -51,7 +48,7 @@ export default function InvoiceForm({ onAdd }) {
 
   return (
     <form
-      className="item-form"
+      className={styles.form}
       onSubmit={handleSubmit}
       noValidate
       data-testid="form"
@@ -87,7 +84,12 @@ export default function InvoiceForm({ onAdd }) {
           {eroare}
         </p>
       )}
-      <button type="submit" disabled={trimite} data-testid="form-submit">
+      <button
+        type="submit"
+        className={`btn ${styles.submit}`}
+        disabled={trimite}
+        data-testid="form-submit"
+      >
         {trimite ? "Se salvează..." : "Adaugă factura"}
       </button>
     </form>

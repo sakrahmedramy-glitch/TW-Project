@@ -1,0 +1,42 @@
+.detail {
+  max-width: 600px;
+}
+
+.back {
+  display: inline-block;
+  margin-bottom: 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* .detail .title bate regula globală .panel h2, care pune margin: 0 */
+.detail .title {
+  margin-bottom: 18px;
+  overflow-wrap: break-word;
+}
+
+.done {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 10px 20px;
+  align-items: center;
+  margin: 0;
+}
+
+.fields dt {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.fields dd {
+  margin: 0;
+}
+
+.message {
+  margin-bottom: 14px;
+}

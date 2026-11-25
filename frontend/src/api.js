@@ -21,6 +21,10 @@ export function fetchFacturi() {
   return request("/facturi");
 }
 
+export function fetchFactura(id) {
+  return request(`/facturi/${id}`);
+}
+
 export function createFactura(factura) {
   return request("/facturi", {
     method: "POST",

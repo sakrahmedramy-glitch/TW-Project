@@ -46,6 +46,9 @@ npm run dev
 Open the address printed by Vite (usually http://localhost:5173). The frontend reads
 the API base URL from `VITE_API_URL` and defaults to `http://localhost:3001`.
 Copy `.env.example` to `.env` only when a different API address is needed.
+
+Pages: `/` (invoice list and form), `/facturi/:id` (invoice details), `/despre`
+(about), and a 404 page for any other address.
 The original static mockup and Stage 2 data logic are preserved in `mockup/`.
 
 ## Stage 2: data logic
@@ -92,8 +95,9 @@ Details per stage: see the `ai-log/` folder.
 - [x] Stage 4: components rendered from data (local checks passed; publication pending)
 - [x] Stage 5: local state and events (implementation complete; validation unavailable; publication pending)
 - [x] Stage 6: data from a mock API
-- [x] Stage 7: form and validation (local verification complete; publication pending)
-- [ ] Stage 8: routing and detail page
+- [x] Stage 7: form and validation
+- [x] Stage 8: routing and detail page (local verification complete; publication pending)
+- [ ] Stage 9: own backend with Express
 
 ## Stage 3: Vite and React project
 
@@ -159,12 +163,12 @@ are held in memory and reset on refresh, as expected for this stage.
 
 | ID | Requirement | Where | How to check |
 |---|---|---|---|
-| S5-R1 | Invoice list is kept in `useState` in the parent | [App.jsx#L17-L18](./frontend/src/App.jsx#L17-L18) | Read the component state |
-| S5-R2 | Checking an invoice changes its state and card appearance | [App.jsx#L20-L28](./frontend/src/App.jsx#L20-L28), [InvoiceCard.jsx#L12-L24](./frontend/src/components/InvoiceCard.jsx#L12-L24) | Click a checkbox |
-| S5-R3 | Deleting an invoice removes it from the list | [App.jsx#L30-L32](./frontend/src/App.jsx#L30-L32), [InvoiceCard.jsx#L28-L34](./frontend/src/components/InvoiceCard.jsx#L28-L34) | Click Delete |
-| S5-R4 | Header counter is derived from the list, not stored in state | [App.jsx#L40](./frontend/src/App.jsx#L40) | Toggle a checkbox and watch the header |
-| S5-R5 | State updates are immutable and use updater functions | [App.jsx#L20-L32](./frontend/src/App.jsx#L20-L32) | Inspect the `map` and `filter` updates |
-| S5-R6 | Theme toggle works in both directions and overrides system preference | [App.jsx#L10-L13](./frontend/src/App.jsx#L10-L13), [App.jsx#L34-L38](./frontend/src/App.jsx#L34-L38), [App.css#L286-L306](./frontend/src/App.css#L286-L306) | Test with both system themes |
+| S5-R1 | Invoice list is kept in `useState` in the parent | [App.jsx#L17-L18](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/App.jsx#L17-L18) | Read the component state |
+| S5-R2 | Checking an invoice changes its state and card appearance | [App.jsx#L20-L28](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/App.jsx#L20-L28), [InvoiceCard.jsx#L12-L24](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/components/InvoiceCard.jsx#L12-L24) | Click a checkbox |
+| S5-R3 | Deleting an invoice removes it from the list | [App.jsx#L30-L32](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/App.jsx#L30-L32), [InvoiceCard.jsx#L28-L34](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/components/InvoiceCard.jsx#L28-L34) | Click Delete |
+| S5-R4 | Header counter is derived from the list, not stored in state | [App.jsx#L40](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/App.jsx#L40) | Toggle a checkbox and watch the header |
+| S5-R5 | State updates are immutable and use updater functions | [App.jsx#L20-L32](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/App.jsx#L20-L32) | Inspect the `map` and `filter` updates |
+| S5-R6 | Theme toggle works in both directions and overrides system preference | [App.jsx#L10-L13](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/App.jsx#L10-L13), [App.jsx#L34-L38](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/App.jsx#L34-L38), [App.css#L286-L306](https://github.com/sakrahmedramy-glitch/TW-Project/blob/e12dafd/frontend/src/App.css#L286-L306) | Test with both system themes |
 | S5-R7 | No console warnings; README and AI log are updated | `README.md`, `ai-log/etapa-05.md` | Run lint/build and check the browser console |
 | S5-R8 | Stage 5 commit is published on GitHub | Git history | Check the Stage 5 commit |
 
@@ -236,16 +240,68 @@ from table 7.3; the urgency select uses `form-urgenta`.
 
 | ID | Requirement | Where | How to check |
 |---|---|---|---|
-| S7-R1 | Controlled form: `value` + `onChange` on every field | [InvoiceForm.jsx#L61-L83](./frontend/src/components/InvoiceForm.jsx#L61-L83) | Read the fields |
-| S7-R2 | Empty title shows an error and nothing is sent | [InvoiceForm.jsx#L18-L37](./frontend/src/components/InvoiceForm.jsx#L18-L37) | Submit empty, watch Network |
-| S7-R3 | Added invoice shows in the list and survives refresh | [App.jsx#L50-L53](./frontend/src/App.jsx#L50-L53), [api.js#L24-L29](./frontend/src/api.js#L24-L29) | Add, refresh |
-| S7-R4 | Toggle and delete survive refresh | [App.jsx#L55-L78](./frontend/src/App.jsx#L55-L78), [api.js#L31-L40](./frontend/src/api.js#L31-L40) | Toggle/delete, refresh |
-| S7-R5 | Button disabled while sending, form cleared only on success | [InvoiceForm.jsx#L39-L50](./frontend/src/components/InvoiceForm.jsx#L39-L50), [InvoiceForm.jsx#L90-L92](./frontend/src/components/InvoiceForm.jsx#L90-L92) | `--delay 3000`; stop the API and submit |
-| S7-R6 | `tw.json` and the `data-testid` attributes from table 7.3 | [tw.json](./tw.json), [InvoiceCard.jsx#L10-L40](./frontend/src/components/InvoiceCard.jsx#L10-L40), [InvoiceList.jsx#L6](./frontend/src/components/InvoiceList.jsx#L6) | `querySelectorAll` in the console |
+| S7-R1 | Controlled form: `value` + `onChange` on every field | [InvoiceForm.jsx#L61-L83](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/components/InvoiceForm.jsx#L61-L83) | Read the fields |
+| S7-R2 | Empty title shows an error and nothing is sent | [InvoiceForm.jsx#L18-L37](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/components/InvoiceForm.jsx#L18-L37) | Submit empty, watch Network |
+| S7-R3 | Added invoice shows in the list and survives refresh | [App.jsx#L50-L53](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/App.jsx#L50-L53), [api.js#L24-L29](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/api.js#L24-L29) | Add, refresh |
+| S7-R4 | Toggle and delete survive refresh | [App.jsx#L55-L78](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/App.jsx#L55-L78), [api.js#L31-L40](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/api.js#L31-L40) | Toggle/delete, refresh |
+| S7-R5 | Button disabled while sending, form cleared only on success | [InvoiceForm.jsx#L39-L50](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/components/InvoiceForm.jsx#L39-L50), [InvoiceForm.jsx#L90-L92](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/components/InvoiceForm.jsx#L90-L92) | `--delay 3000`; stop the API and submit |
+| S7-R6 | `tw.json` and the `data-testid` attributes from table 7.3 | [tw.json](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/tw.json), [InvoiceCard.jsx#L10-L40](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/components/InvoiceCard.jsx#L10-L40), [InvoiceList.jsx#L6](https://github.com/sakrahmedramy-glitch/TW-Project/blob/2d9067c/frontend/src/components/InvoiceList.jsx#L6) | `querySelectorAll` in the console |
 | S7-R7 | README Stage 7 section and AI log | `README.md`, `ai-log/etapa-07.md` | Read both files |
 | S7-R8 | Stage 7 commit is published on GitHub | Git history | Check the Stage 7 commit |
 
 S7-R1–S7-R7 are implemented and checked locally with lint, the production build,
 and automated headless Chrome scenarios for validation, add, toggle, delete,
-refresh, a stopped API, and a delayed API. S7-R8 remains pending until the changes
-are committed and published.
+refresh, a stopped API, and a delayed API. S7-R8 is complete: the Stage 7 changes
+are published in commit `2d9067c`.
+
+## Stage 8: routing and detail page
+
+Three pages behind React Router: the invoice list at `/`, a detail page at
+`/facturi/:id`, and an about page at `/despre`, plus a 404 page for any other
+address. The detail route uses the `resource` value from `tw.json`. Component
+styles moved to CSS Modules.
+
+- `App.jsx` contains only the route map. The shared `Layout` component renders the
+  header, the `NavLink` navigation, the theme toggle, and the footer once, and each
+  page appears in its `<Outlet />`.
+- Navigation uses `Link` and `NavLink`, so pages change without reloading the
+  document. `NavLink` marks the current page; `end` keeps the `/` link from staying
+  active on every page.
+- The invoice title in each card links to its detail page. `FacturaDetaliuPage`
+  reads the `id` with `useParams` and requests `GET /facturi/:id`. The effect
+  depends on `[id]`, so it loads again when the address changes. An unknown ID
+  shows the server's 404 error and a link back to the list.
+- The list page logic moved from `App.jsx` to `FacturiPage.jsx` unchanged. The
+  invoice counter moved from the header into the list panel, because the header is
+  now shared by every page.
+- `App.css` was renamed to `index.css` and keeps only the color variables, the
+  light and dark themes, and shared classes (`panel`, `info`, `empty`, `error`,
+  `btn`, `btn-danger`, `badge-*`, `status-*`). Each component and page with its own
+  styles has a `.module.css` file next to it.
+- The urgency values and labels live in `constants.js`, shared by the form, the
+  card, and the detail page.
+
+The Stage 7 `data-testid` attributes stay on the same elements, except that the card
+title is now a link marked `item-link` instead of `item-title`. Stage 8 adds `nav`,
+`detail`, `detail-title`, `not-found`, and `loading`/`error` on the detail page.
+
+Reloading a detail URL works with `npm run dev` and `npm run preview`, because Vite
+returns `index.html` for every address.
+
+### Stage 8 verification checklist
+
+| ID | Requirement | Where | How to check |
+|---|---|---|---|
+| S8-R1 | Header navigation changes page without reload | [App.jsx#L12-L19](./frontend/src/App.jsx#L12-L19), [Layout.jsx#L41-L53](./frontend/src/components/Layout.jsx#L41-L53) | Click the links, watch Network |
+| S8-R2 | Clicking an invoice opens its detail page | [InvoiceCard.jsx#L23-L29](./frontend/src/components/InvoiceCard.jsx#L23-L29), [FacturaDetaliuPage.jsx](./frontend/src/pages/FacturaDetaliuPage.jsx) | Click a title |
+| S8-R3 | Refresh on the detail URL works; a missing ID shows an error | [FacturaDetaliuPage.jsx#L8-L59](./frontend/src/pages/FacturaDetaliuPage.jsx#L8-L59), [api.js#L24-L26](./frontend/src/api.js#L24-L26) | Refresh `/facturi/1`, open `/facturi/999` |
+| S8-R4 | An unknown URL shows the app 404 page | [App.jsx#L17](./frontend/src/App.jsx#L17), [NotFoundPage.jsx](./frontend/src/pages/NotFoundPage.jsx) | Open `/ceva` |
+| S8-R5 | Components have their own `.module.css`; `index.css` has only shared styles | [src/components](./frontend/src/components), [src/pages](./frontend/src/pages), [index.css](./frontend/src/index.css) | Read the files |
+| S8-R6 | `data-testid` attributes from tables 7.3 and 8.2; detail route is `/facturi/:id` | [Layout.jsx#L41](./frontend/src/components/Layout.jsx#L41), [InvoiceCard.jsx#L11-L42](./frontend/src/components/InvoiceCard.jsx#L11-L42), [FacturaDetaliuPage.jsx#L39-L70](./frontend/src/pages/FacturaDetaliuPage.jsx#L39-L70), [NotFoundPage.jsx#L5](./frontend/src/pages/NotFoundPage.jsx#L5) | `querySelector` in the console |
+| S8-R7 | README Stage 8 section and AI log | `README.md`, `ai-log/etapa-08.md` | Read both files |
+| S8-R8 | Stage 8 commit is published on GitHub | Git history | Check the Stage 8 commit |
+
+S8-R1–S8-R7 are implemented and checked locally with lint, the production build,
+and automated headless Chrome scenarios on both `npm run preview` and `npm run dev`.
+The scenarios also repeated the Stage 7 checks for validation, add, toggle, delete,
+and refresh. S8-R8 remains pending until the changes are committed and published.
