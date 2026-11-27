@@ -341,3 +341,15 @@ curl -i --json '{"titlu":"  "}' http://localhost:3001/facturi
 curl -i -X DELETE http://localhost:3001/facturi/7
 curl -i http://localhost:3001/facturi/7
 ```
+
+### Stage 9 verification checklist
+
+| ID | Requirement | Where (permalink) | How to check |
+|---|---|---|---|
+| S9-R1 | The backend starts on port 3001 | [package.json](https://github.com/sakrahmedramy-glitch/TW-Project/blob/c82c630f1aa2e3731d490b9de2dc394fd0481c4a/backend/package.json#L10-L13), [server.js](https://github.com/sakrahmedramy-glitch/TW-Project/blob/c82c630f1aa2e3731d490b9de2dc394fd0481c4a/backend/src/server.js#L1-L8) | Run `npm ci` and `npm run dev` from `backend/`, then GET `/health` |
+| S9-R2 | All five invoice routes return the expected status codes | [facturi.js](https://github.com/sakrahmedramy-glitch/TW-Project/blob/c82c630f1aa2e3731d490b9de2dc394fd0481c4a/backend/src/routes/facturi.js#L18-L67) | Run the curl commands above |
+| S9-R3 | Invalid data returns 400 and a JSON error | [validation.js](https://github.com/sakrahmedramy-glitch/TW-Project/blob/c82c630f1aa2e3731d490b9de2dc394fd0481c4a/backend/src/validation.js#L1-L49) | POST `{}` or `{"titlu":"  "}` |
+| S9-R4 | React supports CRUD with Express and the mock API removed | [package.json](https://github.com/sakrahmedramy-glitch/TW-Project/blob/c82c630f1aa2e3731d490b9de2dc394fd0481c4a/frontend/package.json), [api.js](https://github.com/sakrahmedramy-glitch/TW-Project/blob/c82c630f1aa2e3731d490b9de2dc394fd0481c4a/frontend/src/api.js#L6-L46) | Add, mark as paid, delete, and refresh |
+| S9-R5 | The browser can reach the API without CORS errors | [app.js](https://github.com/sakrahmedramy-glitch/TW-Project/blob/c82c630f1aa2e3731d490b9de2dc394fd0481c4a/backend/src/app.js#L5-L8) | Open `http://localhost:5173` and inspect the console and response headers |
+| S9-R6 | The README section and AI log are present | [README.md](https://github.com/sakrahmedramy-glitch/TW-Project/blob/c82c630f1aa2e3731d490b9de2dc394fd0481c4a/README.md#L308), [etapa-09.md](https://github.com/sakrahmedramy-glitch/TW-Project/blob/c82c630f1aa2e3731d490b9de2dc394fd0481c4a/ai-log/etapa-09.md) | Read both files |
+| S9-R7 | The implementation commit uses the Stage 9 prefix | [Stage 9 implementation commit](https://github.com/sakrahmedramy-glitch/TW-Project/commit/c82c630f1aa2e3731d490b9de2dc394fd0481c4a) | Find the commit on GitHub |
