@@ -25,7 +25,7 @@ export default function InvoiceCard({ factura, onToggle, onDelete }) {
             className={styles.title}
             data-testid="item-link"
           >
-            {factura.titlu}
+            <span data-testid="item-title">{factura.titlu}</span>
           </Link>
           <span className={`badge badge-${factura.urgenta}`}>
             Urgență {ETICHETE_URGENTA[factura.urgenta]?.toLowerCase()}

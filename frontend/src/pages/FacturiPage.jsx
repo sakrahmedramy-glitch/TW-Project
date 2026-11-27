@@ -24,7 +24,7 @@ export default function FacturiPage() {
       } catch (err) {
         if (!ignore) {
           setError(
-            `Nu am putut încărca facturile: ${err.message}. Rulează npm run api.`
+            `Nu am putut încărca facturile: ${err.message}. Pornește API-ul din backend cu npm run dev.`
           );
         }
       } finally {

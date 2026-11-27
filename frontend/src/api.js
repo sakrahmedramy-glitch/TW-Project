@@ -10,7 +10,9 @@ async function request(path, options = {}) {
   });
 
   if (!response.ok) {
-    throw new Error(`Eroare server: ${response.status}`);
+    const body = await response.json().catch(() => null);
+    const message = typeof body?.error === "string" && body.error;
+    throw new Error(message || `Eroare server: ${response.status}`);
   }
 
   // 204 No Content nu are corp.

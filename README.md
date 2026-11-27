@@ -1,6 +1,6 @@
 # Smart Invoice Payer
 
-A static mockup for tracking utility bills, rent, and subscription invoices.  
+A React app for tracking utility bills, rent, and subscription invoices.
 It highlights payment status and urgency so users can see which invoices are still due.
 
 ## Data model
@@ -23,29 +23,26 @@ Sample data used across all stages:
 
 ## How to run
 
-The React app and mock REST API live in `frontend/`. Install dependencies once:
+Use Node.js 22.9 or newer. Start the Express API in the first terminal:
 
 ```sh
-cd frontend
-npm install
-```
-
-Start the API in the first terminal:
-
-```sh
-npm run api
-```
-
-The generated `GET /facturi` route is available at http://localhost:3001/facturi.
-Start Vite in a second terminal:
-
-```sh
+cd backend
+npm ci
 npm run dev
 ```
 
-Open the address printed by Vite (usually http://localhost:5173). The frontend reads
-the API base URL from `VITE_API_URL` and defaults to `http://localhost:3001`.
-Copy `.env.example` to `.env` only when a different API address is needed.
+Start the React app in a second terminal from the repository root:
+
+```sh
+cd frontend
+npm ci
+npm run dev
+```
+
+Open `http://localhost:5173`. The API runs at `http://localhost:3001`.
+For custom settings, copy `backend/.env.example` to `backend/.env` and edit
+`PORT` and `CORS_ORIGIN`. If the API address changes, set `VITE_API_URL` in
+`frontend/.env`. Use `npm start` in `backend/` to run without watch mode.
 
 Pages: `/` (invoice list and form), `/facturi/:id` (invoice details), `/despre`
 (about), and a 404 page for any other address.
@@ -96,8 +93,9 @@ Details per stage: see the `ai-log/` folder.
 - [x] Stage 5: local state and events (implementation complete; validation unavailable; publication pending)
 - [x] Stage 6: data from a mock API
 - [x] Stage 7: form and validation
-- [x] Stage 8: routing and detail page (local verification complete; publication pending)
-- [ ] Stage 9: own backend with Express
+- [x] Stage 8: routing and detail page
+- [x] Stage 9: own backend with Express
+- [ ] Stage 10: MariaDB and full CRUD
 
 ## Stage 3: Vite and React project
 
@@ -190,7 +188,8 @@ message when the request fails, and `InvoiceList` only after a successful respon
 Checking and deleting invoices remain local Stage 5 interactions, so those changes
 are reset when the page reloads.
 
-Run Stage 6 in two terminals from `frontend/`:
+To reproduce Stage 6, check out commit `6fbbfe3` and run these commands in separate
+terminals from `frontend/`:
 
 ```sh
 npm run api  # terminal 1: http://localhost:3001
@@ -304,4 +303,41 @@ returns `index.html` for every address.
 S8-R1–S8-R7 are implemented and checked locally with lint, the production build,
 and automated headless Chrome scenarios on both `npm run preview` and `npm run dev`.
 The scenarios also repeated the Stage 7 checks for validation, add, toggle, delete,
-and refresh. S8-R8 remains pending until the changes are committed and published.
+and refresh. Stage 8 was published in commit `79251e9`.
+
+## Stage 9: own backend with Express
+
+Express serves the invoice API in `backend/`. It keeps the initial invoices and
+all changes in memory, so changes survive a browser refresh but reset when the
+server restarts. The React app uses the same `/facturi` endpoints and displays
+the error message returned by the API.
+
+| Method | Path | Success |
+|---|---|---|
+| GET | `/health` | 200, server status |
+| GET | `/facturi` | 200, list of invoices |
+| GET | `/facturi/:id` | 200, invoice |
+| POST | `/facturi` | 201, created invoice |
+| PATCH | `/facturi/:id` | 200, updated invoice |
+| DELETE | `/facturi/:id` | 204, empty body |
+
+A new invoice requires a title of 1–100 characters after trimming. Urgency must
+be `scazuta`, `medie`, or `mare` and defaults to `medie`. Payment status must be
+a boolean and defaults to `false`. PATCH validates the fields supplied, and the
+server ignores unknown fields and assigns its own IDs. Invalid data and IDs return
+400. Missing invoices and unknown routes return 404. Errors have the format
+`{ "error": "..." }`.
+
+To check the API from Git Bash, run these commands in order on a fresh server.
+Use the ID returned by POST in place of `7` if the server has already created invoices.
+
+```bash
+curl -i http://localhost:3001/health
+curl -i http://localhost:3001/facturi
+curl -i --json '{"titlu":"Factură din curl","urgenta":"mare"}' http://localhost:3001/facturi
+curl -i http://localhost:3001/facturi/7
+curl -i -X PATCH --json '{"platita":true}' http://localhost:3001/facturi/7
+curl -i --json '{"titlu":"  "}' http://localhost:3001/facturi
+curl -i -X DELETE http://localhost:3001/facturi/7
+curl -i http://localhost:3001/facturi/7
+```
